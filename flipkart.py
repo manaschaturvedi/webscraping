@@ -1,16 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
-import re
 
-def flipp(k):
-    d = []
-    url = "http://www.flipkart.com/search?q=" + str(k) + "&as=off&as-show=on&otracker=start"
-    ss = requests.get(url)
-    src = ss.text
-    obj = BeautifulSoup(src)
-    for e in obj.findAll("a",class_=re.compile("-title")):
-        title = e.text
-        print title.strip()
+def flipkart(s):
+	url = 'http://www.flipkart.com/search?q=' + str(s) + '&as=off&as-show=off&otracker=start'
+	source_code = requests.get(url)
+	plain_text = source_code.text
+	soup = BeautifulSoup(plain_text, "lxml")
+	for link in soup.findAll('a', {'class' : 'fk-display-block'}):
+		print link.get('title')
 
-h = raw_input("Enter a keyword:")
-print flipp(h)
+keyword = raw_input("Enter a keyword: ")
+flipkart(keyword)
